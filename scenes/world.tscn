@@ -1,0 +1,187 @@
+[gd_scene load_steps=12 format=3 uid="uid://qg5a715x1q0"]
+
+[ext_resource type="Script" uid="uid://c85lrwwmnfv4w" path="res://scripts/Main.gd" id="1_71j4m"]
+[ext_resource type="PackedScene" uid="uid://bshd8e2hkxc6g" path="res://scenes/platform.tscn" id="2_qfnet"]
+[ext_resource type="PackedScene" uid="uid://bqqhi8ok1u7d6" path="res://scenes/coin.tscn" id="3_i7141"]
+[ext_resource type="PackedScene" uid="uid://tkcm0uobdxoh" path="res://scenes/player.tscn" id="4_4mrxx"]
+[ext_resource type="Texture2D" uid="uid://lph6qex4n7g" path="res://assets/BackdropBlackLittleSparkBlack.png" id="4_i7141"]
+[ext_resource type="Texture2D" uid="uid://ls1tksyfk3xe" path="res://assets/20Box2.png" id="5_7r4gi"]
+[ext_resource type="Texture2D" uid="uid://m87slgidogq2" path="res://assets/BackdropBlackLittleSparkTransparent.png" id="7_i7141"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0tvmy"]
+size = Vector2(486, 20)
+
+[sub_resource type="Gradient" id="Gradient_fklji"]
+colors = PackedColorArray(1, 0.976471, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="ImageTexture" id="ImageTexture_71j4m"]
+
+[sub_resource type="Environment" id="Environment_71j4m"]
+background_mode = 3
+background_canvas_max_layer = 1
+tonemap_mode = 1
+tonemap_exposure = 3.27
+tonemap_white = 5.43
+glow_enabled = true
+glow_bloom = 0.64
+adjustment_contrast = 1.64
+adjustment_color_correction = SubResource("ImageTexture_71j4m")
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_71j4m")
+platform_scene = ExtResource("2_qfnet")
+coin_scene = ExtResource("3_i7141")
+platform_remove_distance = 2000
+special_bg_images = Array[String](["res://assets/asteroid1.png", "res://assets/pngfind.com-asteroid-png-1154376.png"])
+
+[node name="Player" parent="." instance=ExtResource("4_4mrxx")]
+position = Vector2(-17, 50)
+arrow_line_color = Color(1, 0, 0, 0)
+
+[node name="BG0" type="Parallax2D" parent="."]
+z_index = -20
+scroll_scale = Vector2(0.2, 0.2)
+scroll_offset = Vector2(-251, -596)
+repeat_size = Vector2(512, 512)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="BG0"]
+texture = ExtResource("4_i7141")
+centered = false
+
+[node name="BG1" type="Parallax2D" parent="."]
+z_index = -20
+scroll_scale = Vector2(0.5, 0.5)
+repeat_size = Vector2(512, 512)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="BG1"]
+texture = ExtResource("7_i7141")
+centered = false
+
+[node name="BG2" type="Parallax2D" parent="."]
+z_index = -20
+scale = Vector2(2.72, 2.72)
+scroll_scale = Vector2(0.8, 0.8)
+scroll_offset = Vector2(-7, 55)
+repeat_size = Vector2(512, 512)
+repeat_times = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="BG2"]
+texture = ExtResource("7_i7141")
+centered = false
+
+[node name="CameraAnchor" type="Node2D" parent="."]
+position = Vector2(0.22, -80)
+
+[node name="Camera2D" type="Camera2D" parent="CameraAnchor"]
+position = Vector2(-2, -83)
+zoom = Vector2(1.5, 1.5)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+scale = Vector2(2.395, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2(-1, 74)
+shape = SubResource("RectangleShape2D_0tvmy")
+
+[node name="Polygon2D" type="Polygon2D" parent="Floor"]
+color = Color(0.137255, 0.203922, 0.137255, 1)
+polygon = PackedVector2Array(-244, 64, 242, 63, 242, 83, -245, 82)
+
+[node name="TapParticles" type="CPUParticles2D" parent="."]
+z_index = -2
+position = Vector2(80, 20)
+rotation = -1.83118
+emitting = false
+amount = 15
+texture = ExtResource("5_7r4gi")
+lifetime = 1.2
+one_shot = true
+preprocess = 1.0
+speed_scale = 2.0
+fract_delta = false
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 40.0
+initial_velocity_max = 80.0
+angular_velocity_min = -130.9
+angular_velocity_max = 145.45
+scale_amount_min = 0.2
+scale_amount_max = 0.4
+color = Color(1, 1, 0.12549, 1)
+color_ramp = SubResource("Gradient_fklji")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Flash" type="ColorRect" parent="CanvasLayer"]
+visible = false
+offset_left = -3.0
+offset_top = -7.0
+offset_right = 729.0
+offset_bottom = 1309.0
+color = Color(1, 1, 1, 0.466667)
+
+[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+offset_left = 37.0
+offset_top = 41.0
+offset_right = 618.0
+offset_bottom = 228.0
+
+[node name="Score" type="Label" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Score: 0"
+
+[node name="HP" type="Label" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+
+[node name="DebugLabel" type="Label" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+
+[node name="GameOverUI" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/GameOverUI"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -3.0
+offset_right = 641.0
+offset_bottom = 1185.0
+
+[node name="GO-Background" type="ColorRect" parent="CanvasLayer/GameOverUI/MarginContainer"]
+z_index = -3
+layout_mode = 2
+color = Color(0.109968, 0.203586, 0.331066, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GameOverUI/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/GameOverUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="Highscore" type="Label" parent="CanvasLayer/GameOverUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Test"
+horizontal_alignment = 1
+
+[node name="Try Again" type="Button" parent="CanvasLayer/GameOverUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Try again"
+
+[node name="Quit" type="Button" parent="CanvasLayer/GameOverUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Quit"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_71j4m")

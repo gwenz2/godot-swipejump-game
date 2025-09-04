@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=3 uid="uid://tkcm0uobdxoh"]
+
+[ext_resource type="Script" uid="uid://hitywm5s1ec1" path="res://scripts/Player.gd" id="1_3vyb7"]
+[ext_resource type="Texture2D" uid="uid://dtoi5c0qlqhpn" path="res://assets/20xBox.png" id="2_g2els"]
+[ext_resource type="Texture2D" uid="uid://ls1tksyfk3xe" path="res://assets/20Box2.png" id="2_qhqgy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
+size = Vector2(26, 25)
+
+[sub_resource type="Gradient" id="Gradient_qhqgy"]
+colors = PackedColorArray(1, 0.976471, 0, 0, 1, 1, 1, 1)
+
+[node name="Player" type="CharacterBody2D" groups=["PlayerSHAPE"]]
+script = ExtResource("1_3vyb7")
+sfx_volume_land = 0.929
+sfx_volume_tap = 0.149
+sfx_volume_hurt = 0.197
+trajectory_sensitivity = 0.95
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.568627, 0.6, 1, 1)
+polygon = PackedVector2Array(-16, -15, 16, -15, 16, 15, -16, 15)
+uv = PackedVector2Array(-16, -15, 15, -15, 16, 15, -15, 15)
+
+[node name="LEye" type="Sprite2D" parent="Polygon2D"]
+position = Vector2(-8, -4)
+scale = Vector2(0.511564, 0.348553)
+texture = ExtResource("2_qhqgy")
+
+[node name="REye" type="Sprite2D" parent="Polygon2D"]
+position = Vector2(8, -4)
+scale = Vector2(0.511564, 0.348553)
+texture = ExtResource("2_qhqgy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_g2els")
+
+[node name="LandParticles" type="CPUParticles2D" parent="."]
+z_index = -2
+position = Vector2(1, 18)
+rotation = -1.83118
+emitting = false
+amount = 15
+texture = ExtResource("2_g2els")
+lifetime = 0.4
+one_shot = true
+preprocess = 0.3
+fract_delta = false
+gravity = Vector2(0, 100)
+initial_velocity_min = 25.01
+initial_velocity_max = 186.63
+angular_velocity_min = -130.9
+angular_velocity_max = 145.45
+scale_amount_min = 0.2
+scale_amount_max = 0.2
+color_ramp = SubResource("Gradient_qhqgy")

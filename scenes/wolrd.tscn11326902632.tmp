@@ -1,0 +1,87 @@
+[gd_scene load_steps=8 format=3 uid="uid://qg5a715x1q0"]
+
+[ext_resource type="Script" uid="uid://c85lrwwmnfv4w" path="res://scripts/Main.gd" id="1_tli2v"]
+[ext_resource type="PackedScene" uid="uid://bshd8e2hkxc6g" path="res://scenes/platform.tscn" id="2_qinr1"]
+[ext_resource type="PackedScene" uid="uid://bqqhi8ok1u7d6" path="res://scenes/coin.tscn" id="3_0tvmy"]
+[ext_resource type="PackedScene" uid="uid://tkcm0uobdxoh" path="res://scenes/player.tscn" id="3_myomh"]
+[ext_resource type="Texture2D" uid="uid://ls1tksyfk3xe" path="res://assets/20Box2.png" id="5_yagde"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0tvmy"]
+size = Vector2(486, 20)
+
+[sub_resource type="Gradient" id="Gradient_fklji"]
+colors = PackedColorArray(1, 0.976471, 0, 0, 1, 1, 1, 1)
+
+[node name="Wolrd" type="Node2D"]
+script = ExtResource("1_tli2v")
+platform_scene = ExtResource("2_qinr1")
+coin_scene = ExtResource("3_0tvmy")
+platform_remove_distance = 2000
+
+[node name="Player" parent="." instance=ExtResource("3_myomh")]
+gravity = 500.0
+airbone_tap_speed = 1200.0
+min_drag_distance = 50.0
+max_drag_distance = 300.0
+drag_power_multiplier = 2.0
+arrow_line_width = 3
+arrow_line_color = Color(1, 0, 0, 1)
+trajectory_dot_count = 15
+trajectory_dot_size = Vector2(6, 6)
+airborne_rotation_spins = 1.0
+airborne_rotation_ease = 0.5
+rotation_reset_speed = 1
+squash_stretch_max_stretch_x = 0.2
+squash_stretch_max_squash_y = 0.2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Score" type="Label" parent="CanvasLayer"]
+offset_left = 59.0
+offset_top = 135.0
+offset_right = 111.0
+offset_bottom = 158.0
+text = "Score: "
+
+[node name="Flash" type="ColorRect" parent="CanvasLayer"]
+visible = false
+offset_left = -3.0
+offset_top = -7.0
+offset_right = 729.0
+offset_bottom = 1309.0
+
+[node name="CameraAnchor" type="Node2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="CameraAnchor"]
+zoom = Vector2(1.5, 1.5)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2(-1, 74)
+shape = SubResource("RectangleShape2D_0tvmy")
+
+[node name="Polygon2D" type="Polygon2D" parent="Floor"]
+color = Color(0.137255, 0.203922, 0.137255, 1)
+polygon = PackedVector2Array(-244, 64, 242, 63, 242, 83, -245, 82)
+
+[node name="TapParticles" type="CPUParticles2D" parent="."]
+z_index = -2
+position = Vector2(80, 20)
+rotation = -1.83118
+emitting = false
+amount = 15
+texture = ExtResource("5_yagde")
+lifetime = 1.2
+one_shot = true
+speed_scale = 3.0
+fract_delta = false
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 40.0
+initial_velocity_max = 80.0
+angular_velocity_min = -130.9
+angular_velocity_max = 145.45
+scale_amount_min = 0.5
+color = Color(1, 1, 0.12549, 1)
+color_ramp = SubResource("Gradient_fklji")
