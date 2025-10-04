@@ -12,9 +12,10 @@ config_version=5
 
 config/name="SwipeJump"
 run/main_scene="uid://diaayle473bpp"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/features=PackedStringArray("4.5", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
-config/icon="res://icon.svg"
+config/icon="uid://db4fmjtx7luii"
+config/windows_native_icon="res://iconNEW2.ico"
 config/highscore=3080
 
 [display]
@@ -26,15 +27,21 @@ window/size/extend_to_title=true
 window/size/sharp_corners=true
 window/stretch/mode="canvas_items"
 window/stretch/aspect="keep_width"
+window/handheld/orientation=1
 
 [global_group]
 
 PlayerSHAPE=""
 Coin=""
 
+[physics]
+
+2d/physics_engine="GodotPhysics2D"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
+camera/depth_of_field/depth_of_field_bokeh_quality=0
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)

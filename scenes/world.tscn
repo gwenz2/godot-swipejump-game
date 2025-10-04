@@ -1,12 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://qg5a715x1q0"]
+[gd_scene load_steps=11 format=3 uid="uid://qg5a715x1q0"]
 
 [ext_resource type="Script" uid="uid://c85lrwwmnfv4w" path="res://scripts/Main.gd" id="1_71j4m"]
 [ext_resource type="PackedScene" uid="uid://bshd8e2hkxc6g" path="res://scenes/platform.tscn" id="2_qfnet"]
 [ext_resource type="PackedScene" uid="uid://bqqhi8ok1u7d6" path="res://scenes/coin.tscn" id="3_i7141"]
 [ext_resource type="PackedScene" uid="uid://tkcm0uobdxoh" path="res://scenes/player.tscn" id="4_4mrxx"]
-[ext_resource type="Texture2D" uid="uid://lph6qex4n7g" path="res://assets/BackdropBlackLittleSparkBlack.png" id="4_i7141"]
 [ext_resource type="Texture2D" uid="uid://ls1tksyfk3xe" path="res://assets/20Box2.png" id="5_7r4gi"]
-[ext_resource type="Texture2D" uid="uid://m87slgidogq2" path="res://assets/BackdropBlackLittleSparkTransparent.png" id="7_i7141"]
+[ext_resource type="Texture2D" uid="uid://vi3j6sih2lqu" path="res://assets/New Piskel-2.png.png" id="5_i7141"]
+[ext_resource type="Texture2D" uid="uid://dujfjeem22enb" path="res://assets/New Piskel-1.png (2).png" id="6_4mrxx"]
+[ext_resource type="PackedScene" uid="uid://drwp60x7q7wtx" path="res://addons/BurstParticles2D/BurstParticles2D-demo/MultiParticleExample1.tscn" id="8_4mrxx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0tvmy"]
 size = Vector2(486, 20)
@@ -14,25 +15,12 @@ size = Vector2(486, 20)
 [sub_resource type="Gradient" id="Gradient_fklji"]
 colors = PackedColorArray(1, 0.976471, 0, 0, 1, 1, 1, 1)
 
-[sub_resource type="ImageTexture" id="ImageTexture_71j4m"]
-
-[sub_resource type="Environment" id="Environment_71j4m"]
-background_mode = 3
-background_canvas_max_layer = 1
-tonemap_mode = 1
-tonemap_exposure = 3.27
-tonemap_white = 5.43
-glow_enabled = true
-glow_bloom = 0.64
-adjustment_contrast = 1.64
-adjustment_color_correction = SubResource("ImageTexture_71j4m")
-
 [node name="World" type="Node2D"]
 script = ExtResource("1_71j4m")
 platform_scene = ExtResource("2_qfnet")
 coin_scene = ExtResource("3_i7141")
 platform_remove_distance = 2000
-special_bg_images = Array[String](["res://assets/asteroid1.png", "res://assets/pngfind.com-asteroid-png-1154376.png"])
+special_bg_images = Array[String](["res://assets/special1.png", "res://assets/special2.png", "res://assets/special3.png", "res://assets/special4.png"])
 
 [node name="Player" parent="." instance=ExtResource("4_4mrxx")]
 position = Vector2(-17, 50)
@@ -41,12 +29,12 @@ arrow_line_color = Color(1, 0, 0, 0)
 [node name="BG0" type="Parallax2D" parent="."]
 z_index = -20
 scroll_scale = Vector2(0.2, 0.2)
-scroll_offset = Vector2(-251, -596)
-repeat_size = Vector2(512, 512)
+scroll_offset = Vector2(500, 700)
+repeat_size = Vector2(500, 700)
 repeat_times = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="BG0"]
-texture = ExtResource("4_i7141")
+texture = ExtResource("5_i7141")
 centered = false
 
 [node name="BG1" type="Parallax2D" parent="."]
@@ -56,7 +44,7 @@ repeat_size = Vector2(512, 512)
 repeat_times = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="BG1"]
-texture = ExtResource("7_i7141")
+texture = ExtResource("6_4mrxx")
 centered = false
 
 [node name="BG2" type="Parallax2D" parent="."]
@@ -68,7 +56,7 @@ repeat_size = Vector2(512, 512)
 repeat_times = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="BG2"]
-texture = ExtResource("7_i7141")
+texture = ExtResource("5_i7141")
 centered = false
 
 [node name="CameraAnchor" type="Node2D" parent="."]
@@ -112,14 +100,20 @@ scale_amount_max = 0.4
 color = Color(1, 1, 0.12549, 1)
 color_ramp = SubResource("Gradient_fklji")
 
+[node name="MultiParticleExample1" parent="TapParticles" instance=ExtResource("8_4mrxx")]
+scale = Vector2(0.07, 0.07)
+repeat = false
+free_when_finished = false
+autostart = false
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Flash" type="ColorRect" parent="CanvasLayer"]
 visible = false
-offset_left = -3.0
-offset_top = -7.0
-offset_right = 729.0
-offset_bottom = 1309.0
+offset_left = -104.0
+offset_top = -28.0
+offset_right = 794.0
+offset_bottom = 1363.0
 color = Color(1, 1, 1, 0.466667)
 
 [node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
@@ -147,10 +141,10 @@ anchors_preset = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/GameOverUI"]
 layout_mode = 0
-offset_left = 1.0
-offset_top = -3.0
-offset_right = 641.0
-offset_bottom = 1185.0
+offset_left = -92.0
+offset_top = -76.0
+offset_right = 727.0
+offset_bottom = 1341.0
 
 [node name="GO-Background" type="ColorRect" parent="CanvasLayer/GameOverUI/MarginContainer"]
 z_index = -3
@@ -182,6 +176,3 @@ text = "Try again"
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "Quit"
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_71j4m")

@@ -3,13 +3,14 @@
 [ext_resource type="Script" uid="uid://8ij40wr6wmlu" path="res://scripts/Platform.gd" id="1_ba0x2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v4t87"]
-size = Vector2(84, 21)
+size = Vector2(80, 21)
 
 [node name="platform" type="StaticBody2D"]
 script = ExtResource("1_ba0x2")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 position = Vector2(-10, 0)
+color = Color(0.89492244, 0.89492244, 0.8949224, 1)
 polygon = PackedVector2Array(-32, -11, 52, -11, 52, 10, -32, 10)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

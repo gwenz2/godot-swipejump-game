@@ -37,6 +37,7 @@ var dragging = false
 var input_enabled := true
 var hp := 3
 var fall_start_y := 0.0
+var tap_air_used = false
 
 signal died
 
@@ -116,6 +117,8 @@ func _input(event):
 			if is_airborne:
 				velocity.y = airbone_tap_speed  # Tap to drop faster
 				velocity.x = 0
+				tap_air_used = true
+				input_enabled = false # Disable all input after tap-air
 				if get_tree().current_scene.has_method("camera_flash"):
 					get_tree().current_scene.camera_flash() # Flash when tap in air
 				play_tap_air_sound()
@@ -239,6 +242,7 @@ func _physics_process(delta):
 				if get_tree().current_scene.has_method("start_camera_shake"):
 					get_tree().current_scene.start_camera_shake(12, 0.12)
 		is_airborne = false
+		input_enabled = true # Re-enable input on landing
 		velocity = Vector2.ZERO
 		play_squash()
 		if get_tree().current_scene.has_method("start_camera_shake"):
@@ -252,7 +256,7 @@ func _physics_process(delta):
 			last_platform = collision.get_collider()
 		else:
 			last_platform = null
-	else:
+	else:	
 		# If standing on a moving platform, follow its movement (only if not airborne)
 		if not is_airborne and last_platform and last_platform._moving:
 			# Only update _last_player_x when first landing on the platform
@@ -313,7 +317,8 @@ func play_land_sound():
 	sfx_player_land.stream = land_sounds[0]
 	sfx_player_land.pitch_scale = pitch
 	sfx_player_land.play()
-	$LandParticles.emitting = true
+	#$LandParticles.emitting = true
+	$LandParticles/MultiParticleExample2.burst()
 
 func play_hurt_sound():
 	var pitch = randf_range(0.85, 1.05)

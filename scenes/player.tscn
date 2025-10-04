@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://tkcm0uobdxoh"]
+[gd_scene load_steps=7 format=3 uid="uid://tkcm0uobdxoh"]
 
 [ext_resource type="Script" uid="uid://hitywm5s1ec1" path="res://scripts/Player.gd" id="1_3vyb7"]
 [ext_resource type="Texture2D" uid="uid://dtoi5c0qlqhpn" path="res://assets/20xBox.png" id="2_g2els"]
 [ext_resource type="Texture2D" uid="uid://ls1tksyfk3xe" path="res://assets/20Box2.png" id="2_qhqgy"]
+[ext_resource type="PackedScene" uid="uid://duqam6ffexoc8" path="res://addons/BurstParticles2D/BurstParticles2D-demo/MultiParticleExample2.tscn" id="4_dqkch"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
 size = Vector2(26, 25)
@@ -55,3 +56,9 @@ angular_velocity_max = 145.45
 scale_amount_min = 0.2
 scale_amount_max = 0.2
 color_ramp = SubResource("Gradient_qhqgy")
+
+[node name="MultiParticleExample2" parent="LandParticles" instance=ExtResource("4_dqkch")]
+scale = Vector2(0.012, 0.012)
+repeat = false
+free_when_finished = false
+autostart = false
