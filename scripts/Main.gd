@@ -3,11 +3,12 @@ class_name Main
 
 # --- CONSTANTS ---
 static var SPECIAL_BG_SPAWN_CHANCES := [
-	{ "score": 200, "chance": 0.05 },
-	{ "score": 500, "chance": 0.03 },
-	{ "score": 1000, "chance": 0.02 }
+	{ "score": 20, "chance": 0.2 },
+	{ "score": 50, "chance": 0.13 },
+	{ "score": 54, "chance": 0.13 },
+	{ "score": 100, "chance": 0.12 }
 ]
-static var SPECIAL_BG_SPACING := 800
+static var SPECIAL_BG_SPACING := 1300
 static var SPECIAL_BG_X_RANGE := Vector2(-200, 200)
 static var SPECIAL_BG_Y_OFFSET := Vector2(-600, -800)
 
@@ -21,12 +22,14 @@ static var SPECIAL_BG_Y_OFFSET := Vector2(-600, -800)
 @export var flash_opacity: float = 0.6
 @export var flash_fade_time: float = 0.2
 @export var special_bg_images: Array[String] = [] # Array of image paths (strings)
-@export var special_bg_min_scale: float = 0.05
-@export var special_bg_max_scale: float = 0.4
+@export var special_bg_min_scale: float = 0.09
+@export var special_bg_max_scale: float = 0.9
 @export var special_bg_allow_rotate: bool = true
 @export var special_bg_allow_scale: bool = true
 @export var special_bg_parallax_min: float = 0.2
 @export var special_bg_parallax_max: float = 0.8
+var special_bg_scales: Array[Vector2] = [Vector2(0.18, 0.18), Vector2(0.25, 0.25), Vector2(0.4, 0.4), Vector2(0.5, 0.5)] # asteroid, mini nebula, nebula, asteroid field
+var special_bg_parallax: Array[float] = [0.3, 0.5, 0.7, 0.6 ] # asteroid, mini nebula, nebula, asteroid field # Per-image parallax, e.g. [0.3, 0.5, ...]
 
 # --- NODES ---
 @onready var player = $Player
@@ -201,7 +204,9 @@ func camera_zoom(target_zoom: Vector2, duration: float = 0.3):
 func play_explosion(pos: Vector2):
 	$TapParticles.global_position = pos
 	$TapParticles.emitting = false
-	$TapParticles.emitting = true
+	#$TapParticles.emitting = true
+	$TapParticles/MultiParticleExample1.burst()
+
 
 # --- Game Over UI functions ---
 func show_game_over():
@@ -251,20 +256,33 @@ func spawn_special_bg(idx):
 		if tex:
 			sprite.texture = tex
 			add_child(sprite)
-			# Spawn far from center: wide X, high above camera
-			var x = randf_range(-500, 500) # Wider X range
-			var y = player.position.y - 1700 - randf_range(0, 400) # Always well above camera
+			# Calculate camera top
+			var viewport = get_viewport()
+			var screen_size = viewport.get_visible_rect().size
+			var cam_zoom = camera.zoom
+			var cam_top = camera.global_position.y - (screen_size.y * 0.5 * cam_zoom.y)
+			var x = randf_range(-400, 400)
+			# Adjust spawn height based on parallax: higher parallax = spawn further above
+			var parallax = special_bg_parallax[idx] if idx < special_bg_parallax.size() else randf_range(special_bg_parallax_min, special_bg_parallax_max)
+			var min_offset = 400
+			var max_offset = 800
+			# For high parallax, multiply offset (e.g., up to 2x for parallax near 1)
+			var parallax_factor = lerp(1.0, 2.0, clamp(parallax, 0.0, 1.0))
+			var y = cam_top - min_offset * parallax_factor - randf_range(0, (max_offset - min_offset) * parallax_factor)
 			sprite.global_position = Vector2(x, y)
-			sprite.z_index = -10 # Behind everything
-			# Random scale
+			sprite.z_index = -10
+			# Per-image scale
 			if special_bg_allow_scale:
-				var scale = randf_range(special_bg_min_scale, special_bg_max_scale)
-				sprite.scale = Vector2.ONE * scale
+				if idx < special_bg_scales.size():
+					sprite.scale = special_bg_scales[idx]
+				else:
+					var scale = randf_range(special_bg_min_scale, special_bg_max_scale)
+					sprite.scale = Vector2.ONE * scale
 			# Random rotation
 			if special_bg_allow_rotate:
 				sprite.rotation = randf_range(0, TAU)
-			# Parallax factor
-			var parallax = randf_range(special_bg_parallax_min, special_bg_parallax_max)
+			# Per-image parallax
+			parallax = special_bg_parallax[idx] if idx < special_bg_parallax.size() else randf_range(special_bg_parallax_min, special_bg_parallax_max)
 			special_bg_nodes.append({"sprite": sprite, "base_y": y, "parallax": parallax})
 
 func spawn_special_backgrounds():
@@ -275,11 +293,15 @@ func spawn_special_backgrounds():
 		if score >= spawn_info["score"] and player.position.y < last_special_bg_y - SPECIAL_BG_SPACING:
 			if randf() < spawn_info["chance"]:
 				spawn_special_bg(i)
+				print(i)
 				last_special_bg_y = player.position.y
 
 func update_special_bg_parallax():
+	# Do not apply shake to special backgrounds; only parallax
 	for info in special_bg_nodes:
 		if is_instance_valid(info.sprite):
 			var base_y = info.base_y
 			var factor = info.parallax
-			info.sprite.global_position.y = base_y + (camera_anchor.position.y - base_y) * factor
+			var parallax_y = base_y + (camera_anchor.position.y - base_y) * factor
+			var parallax_x = info.sprite.global_position.x # keep X as is (or add parallax if you want)
+			info.sprite.global_position = Vector2(parallax_x, parallax_y)

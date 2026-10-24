@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://m87slgidogq2"
-path="res://.godot/imported/BackdropBlackLittleSparkTransparent.png-03764ca20ff3e81734532c2cd87bde8d.ctex"
+uid="uid://cx7leu2x02bly"
+path="res://.godot/imported/special2.png-265f4f5669e60d73868ac70a62e6bafe.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/BackdropBlackLittleSparkTransparent.png"
-dest_files=["res://.godot/imported/BackdropBlackLittleSparkTransparent.png-03764ca20ff3e81734532c2cd87bde8d.ctex"]
+source_file="res://assets/special2.png"
+dest_files=["res://.godot/imported/special2.png-265f4f5669e60d73868ac70a62e6bafe.ctex"]
 
 [params]
 
